@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <p id="disp"></p>
+
+        <div class="textarea">
+            <textarea onkeyup="update();" name="txtarea"></textarea>
+        </div>
+
+        <div class="myCheckbox">
+            <label for="trig_enabled"><input type="checkbox" id="trig_enabled">Parentesis</label>
+        </div>
+
+        <div class="keyboard">
+
+            <div class="row">
+                <button class="btn" onclick="writeTextArea('\\int ', 0)">
+                    \(\color{white} \int\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\int_{}^{} ', 5)">
+                    \(\color{white} \int_{a}^{b}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\lim_{} ', 2)">
+                    \(\color{white} \lim_{}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\binom{}{} ', 4)">
+                    \(\color{white} \binom{n}{k}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\mathrm{d} x ', 1)">
+                    \(\color{white} \mathrm{d} x\)
+                </button>
+                <button class="btn" onclick="writeTextArea('^{} ', 2)">
+                    \(\color{white} x^{n}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('e^{} ', 2)">
+                    \(\color{white} e^{n}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\frac{}{} ', 4)">
+                    \(\color{white} \frac{a}{b}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\sqrt{} ', 2)">
+                    \(\color{white} \sqrt{}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\sqrt[]{} ', 4)">
+                    \(\color{white} \sqrt[n]{}\)
+                </button>
+            </div>
+
+            <div class="row">
+                <button class="btn" onclick="writeTextArea('\\sum ', 0)">
+                    \(\color{white} \sum\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\sum_{}^{} ', 5)">
+                    \(\color{white} \sum_{a}^{b}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\prod ', 0)">
+                    \(\color{white} \prod\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\prod_{}^{} ', 5)">
+                    \(\color{white} \prod_{a}^{b}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\imath ', 0)">
+                    \(\color{white} \imath\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\infty ', 0)">
+                    \(\color{white} \infty\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\pi ', 0)">
+                    \(\color{white} \pi\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\{  \\} ', 4)">
+                    \(\color{white} \left \{  \right \}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\left(  \\right) ', 9)">
+                    \(\color{white} \left (  \right )\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\left|  \\right| ', 9)">
+                    \(\color{white} \left|  \right|\)
+                </button>
+            </div>
+
+            <div class="row">
+                <button class="btn" onclick="writeTextArea('\\sin ', 0, true)">
+                    \(\color{white} \sin\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\cos ', 0, true)">
+                    \(\color{white} \cos\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\tan ', 0, true)">
+                    \(\color{white} \tan\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\cot ', 0, true)">
+                    \(\color{white} \cot\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\csc ', 0, true)">
+                    \(\color{white} \csc\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\sec ', 0, true)">
+                    \(\color{white} \sec\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\pm ', 0)">
+                    \(\color{white} \pm\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\to ', 0)">
+                    \(\color{white} \to\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\Big|_{}^{} ', 5)">
+                    \(\color{white} |_{b}^{a}\)
+                </button>
+                <button class="btn" onclick="writeTextArea('\\left[  \\right] ', 9)">
+                    \(\color{white} \left[  \right]\)
+                </button>
+            </div>
+
+            <div class="row">
+                <form id="formulario">
+                <button class="btn h" type="button" onclick="writeTextArea('\\ln ', 0);writeTextArea('\\left|  \\right| ', 9)">
+                    \(\color{white} \ln\)
+                </button>
+                <button class="btn h" type="button" onclick="writeTextArea('\\sinh ', 0, true)">
+                    \(\color{white} \sinh\)
+                </button>
+                <button class="btn h" type="button" onclick="writeTextArea('\\cosh ', 0, true)">
+                    \(\color{white} \cosh\)
+                </button>
+                <button class="btn h" type="button" onclick="writeTextArea('\\tanh ', 0, true)">
+                    \(\color{white} \tanh\)
+                </button>
+                <button class="btn h" type="button" onclick="writeTextArea('\\coth ', 0, true)">
+                    \(\color{white} \coth\)
+                </button>
+                <input type="hidden" name="inputTxt" id="inputTxt"><button class="send" type="submit" onclick="send()">Send</button></form>
+                
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script src="app.js"></script>
+</html>

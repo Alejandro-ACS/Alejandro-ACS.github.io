@@ -1,0 +1,222 @@
+<html lang="es">
+<head>
+    <title>Socrative</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        
+        .form {
+          width: 100%;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .form input {
+          margin: 0.5rem;
+        }
+        body {
+
+            background: #115571;  /* fallback for old browsers */
+
+            background: -webkit-linear-gradient(to right, #1d4d61, #115571);  /* Chrome 10-25, Safari 5.1-6 */
+
+            background: linear-gradient(to right, #1d4d61, #115571); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+    </style>
+
+    <script>
+
+        function cleanTbl() {
+
+            var tble = document.getElementById('mytabla');
+
+            tble.removeChild(tble.getElementsByTagName('tbody')[0])
+            
+        }
+
+        function genera_tabla(imprimir) {
+
+            var body = document.getElementsByTagName("body")[0];
+
+            var tabla   = document.getElementById("mytabla");
+
+            var tblBody = document.createElement("tbody");
+
+            for (var i = 0; i < imprimir.length; i++) {
+
+                var hilera = document.createElement("tr");
+
+                if(imprimir[i] != "E1209"){
+
+                    var textoCelda = document.createTextNode(imprimir[i]);
+
+                }else{
+
+                    var textoCelda = document.createElement('hr');
+                    
+                }
+
+                hilera.append(textoCelda);
+
+                tblBody.appendChild(hilera);
+
+            }
+
+            tabla.appendChild(tblBody);
+
+            tabla.setAttribute("border", "0");
+
+        }
+
+        function otra(examen){
+
+            examen = JSON.parse(examen)
+
+            if(examen['name'] != null){
+
+                var Nombre = examen['name'];
+
+                var Id = examen['id'];
+
+                var NumeroPreguntas = examen['questions'].length;
+
+                var y;
+
+                var a;
+
+                var imprimir = [];
+
+                for(var x=0; x<NumeroPreguntas; x++){
+
+                    y = x + 1;
+
+                    if(examen['questions'][x]['question_image'] == null){
+
+                        imprimir.push("Pregunta " + y.toString() + ": " + examen['questions'][x]['question_text'].toString())
+
+                    } else {
+
+                        imprimir.push("Pregunta " + y.toString() + ": " + examen['questions'][x]['question_text'].toString())
+
+                        imprimir.push("Img: " + examen['questions'][x]['question_image']['url'].toString())
+
+                    }
+
+                    if(examen['questions'][x]['type'].toString() == "MC" || examen['questions'][x]['type'].toString() == "TF"){
+
+                        for(var z=0; z<examen['questions'][x]['answers'].length; z++){
+
+                            a = z+1;
+
+                            imprimir.push(a.toString() + ") " + examen['questions'][x]['answers'][z]['text'].toString());
+
+                        }
+
+                    } else if (examen['questions'][x]['type'].toString() == "FR"){
+
+                        imprimir.push("Respuesta libre");
+
+                    }
+
+                    imprimir.push("E1209")
+
+                }
+
+                genera_tabla(imprimir)
+
+            }
+
+        }
+
+        function comprobar(examen){
+
+            if(examen == "El aula no existe"){
+
+                genera_tabla(["El aula no existe"])
+
+            } else if(examen == "Aula inactiva"){
+
+                genera_tabla(["Aula inactiva"])
+
+            } else{
+
+                otra(examen)
+
+            }
+
+        }
+
+        function main(){
+
+            var tble = document.getElementById('mytabla');
+
+            if(tble.getElementsByTagName('tbody')[0] != null){
+
+                cleanTbl()
+
+            }
+
+            var examen;
+
+            var roomName = document.getElementById("token").value
+
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://kahoottoken.herokuapp.com/socrative/' + roomName)}`)
+
+            .then(response => {
+
+                if (response.ok) return response.json()
+
+                throw new Error('Network response was not ok.')
+
+            })
+
+            .then(examen => comprobar(examen.contents));
+
+        }
+    </script>
+
+    </head>
+    <style>
+        #hAtras {
+          border: none;
+        }
+        hr{
+            size: 10;
+        }
+    </style>
+    <body>
+        
+        <div class="container p-4">
+            
+            <div class="jumbotron">
+
+                <button id="hAtras" onclick="window.location = './'"><img src="../img/Flecha.png" alt="Atrás" width="20px"></button>
+                        
+                <H2 style="text-align: center;">Socrative</H2>
+                        
+                <form name="Formulario" class="form">
+                        
+                    <input type="text" id="token" style="text-align: center;" name="token">
+                        
+                    <span>
+                        
+                    <input type="button" value="Enviar" onclick="main()" style="width: 100%;">
+                                              
+                </form>
+
+                <hr size="10" />
+                        
+                <p></p>
+
+                <table id="mytabla">
+                </table>
+
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,360 @@
+<html lang="es">
+<head>
+    <title>Edpuzzle</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        
+        .form {
+          width: 100%;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .form input {
+          margin: 0.5rem;
+        }
+        body {
+
+            background: #115571;  /* fallback for old browsers */
+
+            background: -webkit-linear-gradient(to right, #1d4d61, #115571);  /* Chrome 10-25, Safari 5.1-6 */
+
+            background: linear-gradient(to right, #1d4d61, #115571); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+    </style>
+
+    <script>
+
+        function cleanTbl() {
+
+            var tble = document.getElementById('mytabla');
+
+            tble.removeChild(tble.getElementsByTagName('tbody')[0])
+
+        }
+
+        function genera_tabla5(imprimir) {
+
+            var body = document.getElementsByTagName("body")[0];
+
+            var tabla   = document.getElementById("mytabla");
+
+            var tblBody = document.createElement("tbody");
+
+            for (var i = 0; i < imprimir.length; i++) {
+
+                var hilera = document.createElement("tr");
+
+                if(imprimir[i] != "E1209"){
+
+                    var textoCelda = document.createTextNode(imprimir[i]);
+
+                }else{
+
+                    var textoCelda = document.createElement('hr');
+                    
+                }
+
+                hilera.append(textoCelda);
+
+                tblBody.appendChild(hilera);
+
+            }
+
+            tabla.appendChild(tblBody);
+
+            tabla.setAttribute("border", "0");
+
+        }
+
+        function comprobar(examen, token){
+
+            if(examen == "Token invalido"){
+
+                genera_tabla5(["Ha introducido un token invalido"])
+
+            } else{
+
+                otra(examen, token)
+
+            }
+
+        }
+
+        function genera_tabla4(imprimir){
+
+            cleanTbl()
+
+            var body = document.getElementsByTagName("body")[0];
+
+            var tabla   = document.getElementById("mytabla");
+
+            var tblBody = document.createElement("tbody");
+
+            for (var i = 0; i < imprimir.length; i++) {
+
+                var hilera = document.createElement("tr");
+
+                if(imprimir[i] != "E1209"){
+
+                    var textoCelda = document.createTextNode(imprimir[i]);
+
+                }else{
+
+                    var textoCelda = document.createElement('hr');
+                    
+                }
+
+                hilera.append(textoCelda);
+
+                tblBody.appendChild(hilera);
+
+            }
+
+            tabla.appendChild(tblBody);
+
+            tabla.setAttribute("border", "0");
+
+        }
+
+        function genera_tabla3(numerajo){
+
+            edpuzzles = examenF['medias']
+
+            var imprimir = []
+
+            for(x=0; x<edpuzzles[numerajo]['questions'].length; x++){
+
+                imprimir.push("Pregunta " + (x+1).toString() + ": " + edpuzzles[numerajo]['questions'][x]['body'][0]['html'])
+
+                if (edpuzzles[numerajo]['questions'][x]['type'] != "open-ended"){
+
+                    for(y=0; y<edpuzzles[numerajo]['questions'][x]['choices'].length; y++){
+
+                        if(edpuzzles[numerajo]['questions'][x]['choices'][y]['isCorrect'].toString() == "true"){
+
+                            imprimir.push("Respuesta: " + edpuzzles[numerajo]['questions'][x]['choices'][y]['body'][0]['html'])
+
+                        }
+
+                    }
+
+                    imprimir.push("E1209")
+
+                }
+
+            }
+
+            for(z=0; z<imprimir.length; z++){
+
+                imprimir[z] = imprimir[z].replace("<p>", "").replace("</p>", "").replace("<font style=\"vertical-align: inherit;\">", "").replace("<font style=\"vertical-align: inherit;\">", "").replace("</font>", "").replace("</font>", "").replace("&iquest;", "¿").replace("&aacute;", "á").replace("&eacute;", "é").replace("&iacute;", "í").replace("&oacute;", "ó").replace("&uacute;", "ú").replace("&ntilde;", "ñ").replace("&ordm;", "º");
+
+            }
+
+            genera_tabla4(imprimir)
+
+        }
+
+        function genera_tabla2(imprimir){
+
+            var body = document.getElementsByTagName("body")[0];
+
+            var tabla   = document.getElementById("mytabla");
+
+            var tblBody = document.createElement("tbody");
+
+            for (var i = 0; i < imprimir.length; i++) {
+
+                var hilera = document.createElement("tr");
+
+                hilera.setAttribute("style", "text-align: center;")
+
+                var textoCelda = document.createElement('a');
+
+                textoCelda.innerHTML = imprimir[i];
+
+                textoCelda.setAttribute("onclick", "genera_tabla3(" + i + ")")
+
+                hilera.append(textoCelda);
+
+                tblBody.append(hilera);
+
+            }
+
+            tabla.appendChild(tblBody);
+
+            tabla.setAttribute("border", "0");
+
+        }
+
+        var examenF
+
+        function otra2(alguna_cosa){
+
+            examenF = alguna_cosa
+
+            examenF = JSON.parse(examenF)
+
+            var edpuzzles = [];
+
+            for(i=0; i<examenF['medias'].length; i++){
+
+                edpuzzles.push(examenF['medias'][i]['title'])
+
+            }
+
+            genera_tabla2(edpuzzles)
+
+        }
+
+        function obtener_examenes(idClase, token){
+
+            var tble = document.getElementById('mytabla');
+
+            if(tble.getElementsByTagName('tbody')[0] != null){
+
+                cleanTbl()
+
+            }
+
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://kahoottoken.herokuapp.com/edpuzzle2/' + idClase + "/" +token)}`)
+
+            .then(response => {
+
+                if (response.ok) return response.json()
+
+                throw new Error('Network response was not ok.')
+
+            })
+
+            .then(examen => otra2(examen.contents));
+
+        }
+
+        function genera_tabla1(imprimir, token, pclases) {
+
+            var body = document.getElementsByTagName("body")[0];
+
+            var tabla   = document.getElementById("mytabla");
+
+            var tblBody = document.createElement("tbody");
+
+            for (var i = 0; i < imprimir.length; i++) {
+
+                var hilera = document.createElement("tr");
+
+                hilera.setAttribute("style", "text-align: center;")
+
+                var textoCelda = document.createElement('a');
+
+                textoCelda.innerHTML = imprimir[i];
+
+                textoCelda.setAttribute("onclick", "obtener_examenes('" + pclases[i] + "', '" + token + "')")
+
+                hilera.append(textoCelda);
+
+                tblBody.append(hilera);
+
+            }
+
+            tabla.appendChild(tblBody);
+
+            tabla.setAttribute("border", "0");
+
+        }
+
+        function otra(examen, token){
+
+            var clases = JSON.parse(examen)
+
+            var pclases = []
+
+            var clasesShow = []
+
+            for(i=0; i<clases.length; i++){
+
+                pclases.push(clases[i]['_id'])
+
+                clasesShow.push(clases[i]['name'])
+
+            }
+            
+            genera_tabla1(clasesShow, token, pclases)
+
+        }
+
+        function main(){
+
+            var tble = document.getElementById('mytabla');
+
+            if(tble.getElementsByTagName('tbody')[0] != null){
+
+                cleanTbl()
+
+            }
+
+            var examen;
+
+            var token = document.getElementById("token").value
+
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://kahoottoken.herokuapp.com/edpuzzle1/' + token)}`)
+
+            .then(response => {
+
+                if (response.ok) return response.json()
+
+                throw new Error('Network response was not ok.')
+
+            })
+
+            .then(examen => comprobar(examen.contents, token));
+
+        }
+    </script>
+
+    </head>
+    <style>
+        #hAtras {
+          border: none;
+        }
+        hr{
+            size: 10;
+        }
+    </style>
+    <body>
+        
+        <div class="container p-4">
+            
+            <div class="jumbotron">
+
+                <button id="hAtras" onclick="window.location = './'"><img src="../img/Flecha.png" alt="Atrás" width="20px"></button>
+                        
+                <H2 style="text-align: center;">Edpuzzle</H2>
+                        
+                <form name="Formulario" class="form">
+                        
+                    <input type="text" id="token" style="text-align: center;" name="token">
+                        
+                    <span>
+                        
+                    <input type="button" value="Enviar" onclick="main()" style="width: 100%;">
+                                              
+                </form>
+
+                <hr size="10" />
+                        
+                <p></p>
+
+                <table id="mytabla">
+                </table>
+
+            </div>
+        </div>
+    </body>
+</html>

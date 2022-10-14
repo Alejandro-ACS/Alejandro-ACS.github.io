@@ -1,0 +1,174 @@
+<html>
+<head>
+    <title>Teclados</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script>
+        
+    function limpiar() {
+      for(r=document.getElementsByClassName("imagenes").length; r != 0; r--){
+
+        document.getElementsByClassName("imagenes")[r-1].remove();
+
+      }
+    }
+
+    function esta(lista, seleccionados){
+
+      for(z=0; z != seleccionados.length; z++){
+
+        if(lista.includes(seleccionados[z]) == false){
+
+          return false
+        }
+
+      }
+
+      return true
+
+    }
+
+    function mostrar(numero){
+      var equivalencias = [",", "int", "6", "ae", "b", "Cara sonriente", "Cl", "C", "Cohete", "Copyright", "E", "Estrella negra", "Estrella", "H", "N", "ene", "Ohm", "P", "Puzzle", "Q", "R", "Serpiente", "Tridente", "X", "Y", "A"];
+      var imgg = document.createElement("img");
+      imgg.src = "./imgs/"+equivalencias[numero]+"-modified.png";
+      imgg.className = "imagenes";
+      imgg.width = "75";
+      document.getElementById("imagenes2").append(imgg);
+
+    }
+        
+    function comprobar(){
+
+      limpiar();
+
+      var seleccion = [];
+
+      var lista_seleccionada;
+
+      var orden = [];
+
+      var columnas = [[19, 25, 24, 14, 8, 13, 7], [10, 19, 7, 6, 12, 13, 1], [9, 0, 6, 23, 20, 24, 12], [2, 17, 4, 8, 23, 1, 5], [22, 5, 4, 7, 17, 21, 11], [2, 10, 18, 3, 22, 15, 16]];
+
+      var lista = [eval(document.Formulario.coma.checked), eval(document.Formulario.interrogante.checked), eval(document.Formulario.seis.checked), eval(document.Formulario.ae.checked), eval(document.Formulario.b.checked), eval(document.Formulario.Cara.checked), eval(document.Formulario.cl.checked), eval(document.Formulario.c.checked), eval(document.Formulario.cohete.checked), eval(document.Formulario.copyright.checked), eval(document.Formulario.e.checked), eval(document.Formulario.estrellan.checked), eval(document.Formulario.estrella.checked), eval(document.Formulario.h.checked), eval(document.Formulario.n.checked), eval(document.Formulario.ene.checked), eval(document.Formulario.ohm.checked), eval(document.Formulario.pm.checked), eval(document.Formulario.puzzle.checked), eval(document.Formulario.q.checked), eval(document.Formulario.r.checked), eval(document.Formulario.serpiente.checked), eval(document.Formulario.tridente.checked), eval(document.Formulario.x.checked), eval(document.Formulario.y.checked), eval(document.Formulario.a.checked)];
+
+      for(i=0; i != lista.length; i++){
+
+        if(lista[i] == true){
+
+          seleccion.push(i);
+
+        }
+
+      }
+
+      for(i=0; i != columnas.length; i++){
+
+        if(esta(columnas[i], seleccion)){
+
+          lista_seleccionada = columnas[i];
+
+          break
+
+        }
+
+      }
+
+      if(lista_seleccionada != null){
+
+        for(x=0; x != lista_seleccionada.length; x++){
+          if(seleccion.includes(lista_seleccionada[x])){
+            orden.push(lista_seleccionada[x])
+          }
+        }
+        for(a=0; a != orden.length; a++){
+          mostrar(orden[a])
+        }
+
+      }
+
+    }
+
+    </script>
+
+    <style>
+
+        ::-webkit-scrollbar {display: none;}
+        
+        .form {
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .form input {
+          margin: 0.5rem;
+        }
+        body {
+
+            background: #141E30;  /* fallback for old browsers */
+
+            background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+
+            background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+    </style>
+
+    </head>
+
+    <body onload="limpiar()">
+        <div class="container p-4">
+            
+            <div class="jumbotron">
+
+              <button id="hAtras" onclick="window.location = './'"><img src="../img/Flecha.png" alt="Atrás" width="20px"></button>
+                        
+              <H2 style="text-align: center;">Teclados</H2>
+
+              <br>
+                        
+              <form name="Formulario" class="form">
+
+                <div>
+                        
+                  <label><input type="checkbox" id="cbox1" name="coma"><img src="./imgs/,-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="interrogante"><img src="./imgs/int-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="seis"><img src="./imgs/6-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="ae"><img src="./imgs/ae-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="b"><img src="./imgs/b-modified.png" width="75px"></label><br>
+
+                  <label><input type="checkbox" id="cbox1" name="Cara"><img src="./imgs/Cara sonriente-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="cl"><img src="./imgs/Cl-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="c"><img src="./imgs/C-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="cohete"><img src="./imgs/Cohete-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="copyright"><img src="./imgs/Copyright-modified.png" width="75px"></label><br>
+
+                  <label><input type="checkbox" id="cbox1" name="e"><img src="./imgs/E-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="estrellan"><img src="./imgs/Estrella negra-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="estrella"><img src="./imgs/Estrella-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="h"><img src="./imgs/H-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="n"><img src="./imgs/N-modified.png" width="75px"></label><br>
+
+                  <label><input type="checkbox" id="cbox1" name="ene"><img src="./imgs/ene-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="ohm"><img src="./imgs/Ohm-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="pm"><img src="./imgs/P-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="puzzle"><img src="./imgs/Puzzle-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="q"><img src="./imgs/Q-modified.png" width="75px"></label><br>
+
+                  <label><input type="checkbox" id="cbox1" name="r"><img src="./imgs/R-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="serpiente"><img src="./imgs/Serpiente-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="tridente"><img src="./imgs/Tridente-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="x"><img src="./imgs/X-modified.png" width="75px"></label><label><input type="checkbox" id="cbox1" name="y"><img src="./imgs/Y-modified.png" width="75px"></label><br>
+                
+                  <label><input type="checkbox" id="cbox1" name="a"><img src="./imgs/A-modified.png" width="75px"><br>
+
+                </div>
+                        
+                <span>
+                        
+                  <input type="button" value="Enviar" onclick="comprobar()" style="width: 100%;">
+                    
+              </form>
+                    
+              <hr>
+                            
+              <h6 style="text-align:center;">Solucion</h4>
+                            
+              <div id="imagenes2">
+
+                <img src="" alt="" class="imagenes">
+
+              </div>
+        
+            </div>
+        </div>
+    </body>
+
+</html>

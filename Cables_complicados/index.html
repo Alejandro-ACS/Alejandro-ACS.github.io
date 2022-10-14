@@ -1,0 +1,142 @@
+<html>
+<head>
+    <title>Cables complicados</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <script>
+        
+    function limpiar() {
+      document.getElementById("Solucion").innerText = "--";
+    }
+        
+    function comprobar(){
+        
+      var Rojo = eval(document.Formulario.Rojo.checked);
+
+      var Azul = eval(document.Formulario.Azul.checked);
+
+      var Estrella = eval(document.Formulario.Estrella.checked);
+
+      var Led = eval(document.Formulario.Led.checked);
+
+      var solucion;
+
+      if(Rojo == true & Azul == true & Estrella == true & Led == true){
+        solucion = "n"
+      }else if(Rojo == true & Azul == true & Estrella == true & Led == false){
+        solucion = "p"
+      }else if(Rojo == true & Azul == true & Estrella == false & Led == true){
+        solucion = "s"
+      }else if(Rojo == true & Azul == false & Estrella == true & Led == true){
+        solucion = "b"
+      }else if(Rojo == false & Azul == true & Estrella == true & Led == true){
+        solucion = "p"
+      }else if(Rojo == false & Azul == false & Estrella == true & Led == true){
+        solucion = "b"
+      }else if(Rojo == false & Azul == true & Estrella == false & Led == true){
+        solucion = "p"
+      }else if(Rojo == false & Azul == true & Estrella == true & Led == false){
+        solucion = "n"
+      }else if(Rojo == true & Azul == false & Estrella == false & Led == true){
+        solucion = "b"
+      }else if(Rojo == true & Azul == false & Estrella == true & Led == false){
+        solucion = "c"
+      }else if(Rojo == true & Azul == true & Estrella == false & Led == false){
+        solucion = "s"
+      }else if(Rojo == true & Azul == false & Estrella == false & Led == false){
+        solucion = "s"
+      }else if(Rojo == false & Azul == true & Estrella == false & Led == false){
+        solucion = "s"
+      }else if(Rojo == false & Azul == false & Estrella == true & Led == false){
+        solucion = "c"
+      }else if(Rojo == false & Azul == false & Estrella == false & Led == true){
+        solucion = "n"
+      }else if(Rojo == false & Azul == false & Estrella == false & Led == false){
+        solucion = "c"
+      }
+
+      if(solucion == "c"){
+        document.getElementById("Solucion").innerText = "Corta el cable";
+      }else if(solucion == "n"){
+        document.getElementById("Solucion").innerText = "No cortes el cable";
+      }else if(solucion == "s"){
+        document.getElementById("Solucion").innerText = "Corta el cable si el último dígito del número serial es par";
+      }else if(solucion == "p"){
+        document.getElementById("Solucion").innerText = "Corta el cable si la bomba tiene un puerto paralelo";
+      }else if(solucion == "b"){
+        document.getElementById("Solucion").innerText = "Corta el cable si la bomba tiene dos o más baterías";
+      }
+    }
+    </script>
+
+    <style>
+        
+        .form {
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .form input {
+          margin: 0.5rem;
+        }
+        body {
+
+            background: #141E30;  /* fallback for old browsers */
+
+            background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+
+            background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+    </style>
+
+    </head>
+
+    <body onload="limpiar()">
+        <div class="container p-4">
+            
+            <div class="jumbotron">
+
+              <button id="hAtras" onclick="window.location = './'"><img src="../img/Flecha.png" alt="Atrás" width="20px"></button>
+                        
+              <H2 style="text-align: center;">Cables complicados</H2>
+
+              <br>
+                        
+              <form name="Formulario" class="form">
+
+                <div>
+                        
+                  <label><input type="checkbox" id="cbox1" name="Rojo"> Rojo</label><br>
+
+                  <label><input type="checkbox" id="cbox2" name="Azul"> Azul</label><br>
+
+                  <label><input type="checkbox" id="cbox3" name="Estrella"> Estrella</label><br>
+
+                  <label><input type="checkbox" id="cbox4" name="Led"> Led</label><br>
+                
+                </div>
+                        
+                <span>
+                        
+                  <input type="button" value="Enviar" onclick="comprobar()" style="width: 100%;">
+                    
+              </form>
+                    
+              <hr>
+                            
+              <h6 style="text-align:center;">Solucion</h4>
+                            
+              <p id="Solucion" type="text" style="text-align: center;"></p>
+        
+            </div>
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,73 @@
+body {
+    display: grid;
+    place-items: center;
+    min-height: 90vh;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.myCheckbox {
+    display: flex;
+    align-items: center;
+}
+
+label {
+    background-color: rgb(220, 63, 89);
+    border: none;
+    display: flex;
+    flex-direction: row;
+    padding: .5rem 1rem;
+    margin: .3rem;
+    font-size: 1rem;
+    color: #fff;
+    width: 90px;
+    border-radius: .5rem;
+}
+
+button {
+    background-color: rgb(220, 63, 89);
+    border: none;
+    display: inline-block;
+    padding: .5rem 1rem;
+    margin: .3rem;
+    font-size: 1rem;
+    color: #fff;
+    width: 60px;
+    height: 50px;
+    border-radius: .5rem;
+}
+
+.send {
+    width: 150px;
+    font-size: 1rem;
+    text-transform: capitalize;
+}
+
+.textarea, p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+    padding: .5rem;
+    font-size: 1.2rem;
+    outline: none;
+    border: 2px solid rgb(220, 63, 89);
+    border-radius: .5rem;
+}
+
+#disp {
+    font-size:1rem;
+}
+
+.h {
+    width: 70px;
+}

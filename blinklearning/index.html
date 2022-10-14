@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlinkLearning</title>
+    <link rel="icon" type="image/x-icon" href="https://www.blinklearning.com/favicon.ico">
+    <script src="https://unpkg.com/@ungap/custom-elements-builtin"></script>
+    <script type="module" src="x-frame-bypass.js"></script>
+</head>
+<script>
+    var control = 0;
+
+    function Remove(form_id) {
+        var f = document.getElementById(form_id);
+        f.parentNode.removeChild(f);
+    }
+
+    function prepareFrame(x) {
+        var ifrm = document.createElement("iframe");
+        ifrm.setAttribute("src", "https://"+x);
+        ifrm.style = "position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;";
+        document.body.appendChild(ifrm);
+    }
+    function KeyPress(e) {
+        console.log(e.keyCode)
+        var evtobj = window.event ? event : e
+        if (evtobj.keyCode == 8 && evtobj.ctrlKey) {
+            if (control == 0){
+                var url = prompt("Url: https://");
+                if (url != null){
+                    prepareFrame(url);
+                    Remove("asd");
+                    control = 1;
+                }
+            } else {
+                Remove("asd2");
+                prepareFrame("https://www.blinklearning.com/v/1665749958/themes/tmpux/launch.php");
+                control = 0;
+            }
+        }
+    }
+    document.onkeydown = KeyPress;
+</script>
+<body>
+    <div id="asd">
+        <iframe src="https://www.blinklearning.com/v/1665749958/themes/tmpux/launch.php" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
+    </div>
+</body>
+</html>
