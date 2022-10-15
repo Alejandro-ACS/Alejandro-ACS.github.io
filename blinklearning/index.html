@@ -25,7 +25,7 @@
     function KeyPress(e) {
         console.log(e.keyCode)
         var evtobj = window.event ? event : e
-        if (evtobj.ctrlKey) {
+        if (evtobj.ctrlKey && evtobj.keyCode == 8) {
             var url = prompt("Url: https://");
             if (url != null){
                 prepareFrame(url);
