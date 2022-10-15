@@ -10,7 +10,6 @@
     <script type="module" src="x-frame-bypass.js"></script>
 </head>
 <script>
-    var control = 0;
 
     function Remove(form_id) {
         var f = document.getElementById(form_id);
@@ -26,18 +25,11 @@
     function KeyPress(e) {
         console.log(e.keyCode)
         var evtobj = window.event ? event : e
-        if (evtobj.keyCode == 8 && evtobj.ctrlKey) {
-            if (control == 0){
-                var url = prompt("Url: https://");
-                if (url != null){
-                    prepareFrame(url);
-                    Remove("asd");
-                    control = 1;
-                }
-            } else {
-                Remove("asd2");
-                prepareFrame("https://www.blinklearning.com/v/1665749958/themes/tmpux/launch.php");
-                control = 0;
+        if (evtobj.ctrlKey) {
+            var url = prompt("Url: https://");
+            if (url != null){
+                prepareFrame(url);
+                Remove("asd");
             }
         }
     }
