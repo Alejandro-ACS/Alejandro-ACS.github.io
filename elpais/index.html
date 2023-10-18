@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    const parser = new DOMParser();
+    function httpGet(theUrl)
+    {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+        xmlHttp.send( null );
+        var htmlPage = parser.parseFromString(xmlHttp.response, "text/html");
+        document.head.innerHTML=htmlPage.head.innerHTML;
+        document.body.innerHTML=htmlPage.body.innerHTML;
+        return xmlHttp.response;
+    }
+    httpGet("https://elpais.com/eps/2023-10-14/benditos-monstruos.html");
+</script>
+</html>
