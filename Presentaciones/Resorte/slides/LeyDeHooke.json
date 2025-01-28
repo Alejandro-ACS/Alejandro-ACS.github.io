@@ -1,0 +1,119 @@
+{
+  "slides": [
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\f7983b07d1a58d7e73126386d31e2d7f6574bff39ffb0cf51d0fb9efe9155c5d.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\f7983b07d1a58d7e73126386d31e2d7f6574bff39ffb0cf51d0fb9efe9155c5d_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\56d8df1def5bbf7805c874ec6ac68b68b1753a00dddb665edd64d9cd11c1dbcf.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\56d8df1def5bbf7805c874ec6ac68b68b1753a00dddb665edd64d9cd11c1dbcf_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\a85915d6eb841f7ed51a048f8dc32386da7f19cb1edc5398282d7bfbe97b4d59.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\a85915d6eb841f7ed51a048f8dc32386da7f19cb1edc5398282d7bfbe97b4d59_reversed.mp4"
+    },
+    {
+      "loop": true,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\2fe9991d143d29e05c607909bed9fd0826d152697bf8e78ffdfe677540fb88e4.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\2fe9991d143d29e05c607909bed9fd0826d152697bf8e78ffdfe677540fb88e4_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\814f0145e5c8b40beca7f1919fdd7f96edf11a7b8a5d38b731ed75759b5b4d7c.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\814f0145e5c8b40beca7f1919fdd7f96edf11a7b8a5d38b731ed75759b5b4d7c_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\e54a6ffcb4281110a40ec82c2b877d65e535b46153347aab56276d410e6aaafc.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\e54a6ffcb4281110a40ec82c2b877d65e535b46153347aab56276d410e6aaafc_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\91c5f0290afdc3eb29a517e35cde7f3f572c9cc452fa6792fb18dfa3424d41cf.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\91c5f0290afdc3eb29a517e35cde7f3f572c9cc452fa6792fb18dfa3424d41cf_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": true,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\5eb140b3c06440e990732bb19cd8d70d9dcc692fe37c90d6c92a996957b90635.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\5eb140b3c06440e990732bb19cd8d70d9dcc692fe37c90d6c92a996957b90635_reversed.mp4"
+    },
+    {
+      "loop": true,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\13ebc5395ee8a3716356bb14991ed372c8bf040767964ee9d7c7314c8b021a41.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\13ebc5395ee8a3716356bb14991ed372c8bf040767964ee9d7c7314c8b021a41_reversed.mp4"
+    },
+    {
+      "loop": false,
+      "auto_next": false,
+      "playback_rate": 1.0,
+      "reversed_playback_rate": 1.0,
+      "notes": "",
+      "dedent_notes": true,
+      "skip_animations": false,
+      "file": "slides\\files\\LeyDeHooke\\7c5483e6c18c46c0f04e5c459fe6cb6f832f867de8e4f59e5660ab21ca4735f1.mp4",
+      "rev_file": "slides\\files\\LeyDeHooke\\7c5483e6c18c46c0f04e5c459fe6cb6f832f867de8e4f59e5660ab21ca4735f1_reversed.mp4"
+    }
+  ],
+  "resolution": [
+    1920,
+    1080
+  ],
+  "background_color": "black"
+}
