@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reproductor M3U8 Mejorado</title>
+  <style>
+    body {
+      background: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 2rem;
+    }
+    #videoContainer {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+      background: black;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 8px;
+    }
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    #nextButton {
+      background: #1db954;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.2rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+      opacity: 0.9;
+      pointer-events: auto;
+      transition: opacity 0.3s ease;
+    }
+    #nextButton:hover {
+      opacity: 1;
+    }
+    .selectors {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      width: 80%;
+      max-width: 800px;
+    }
+    select {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+
+    /* Estilos para fullscreen */
+    :fullscreen #videoContainer,
+    :-webkit-full-screen #videoContainer {
+      width: 100vw;
+      height: 100vh;
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 0;
+    }
+
+    :fullscreen #overlay,
+    :-webkit-full-screen #overlay {
+      width: 100vw;
+      height: 100vh;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Aquí No Hay Quien Viva</h1>
+
+  <div id="videoContainer">
+    <video id="video" controls></video>
+    <div id="overlay">
+      <button id="nextButton">Siguiente ▶️</button>
+    </div>
+  </div>
+
+  <div class="selectors">
+    <select id="temporadaSelect">
+      <option value="">Selecciona una temporada</option>
+    </select>
+
+    <select id="episodioSelect" disabled>
+      <option value="">Selecciona un episodio</option>
+    </select>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <script>
+    const video = document.getElementById('video');
+    const videoContainer = document.getElementById('videoContainer');
+    const temporadaSelect = document.getElementById('temporadaSelect');
+    const episodioSelect = document.getElementById('episodioSelect');
+    const nextButton = document.getElementById('nextButton');
+    const overlay = document.getElementById('overlay');
+
+    const episodios = {
+      "Temporada 1": {
+        "Episodio 1": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/02/31BA4E9B-F0A0-4984-94BE-E49E2AD23E97/packaged/hls/playlist.m3u8",
+        "Episodio 2": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/02/74EFD7EA-F234-4C27-AFDF-64E632853073/packaged/hls/playlist.m3u8",
+        "Episodio 3": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/E41139A3-B874-499E-A2B3-6A5819B0DC98/packaged/hls/playlist.m3u8",
+        "Episodio 4": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/D8920C5D-696B-4CEC-870B-1B78ED87C1B5/packaged/hls/playlist.m3u8",
+        "Episodio 5": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/FF9936AA-39D0-4EC4-A671-A51D0C57D3F7/packaged/hls/playlist.m3u8",
+        "Episodio 6": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/02/01E902B6-1456-4864-88BD-7FA18C6E9F10/packaged/hls/playlist.m3u8",
+        "Episodio 7": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/3E94F669-88D8-4DA3-9D74-158F71E47EC7/packaged/hls/playlist.m3u8",
+        "Episodio 8": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/02/6A214789-41B5-41C1-BC2C-4A5DA1056C30/packaged/hls/playlist.m3u8",
+        "Episodio 9": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/6468E0B7-6465-4E2B-AE74-8C1363A9A43C/packaged/hls/playlist.m3u8",
+        "Episodio 10": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/80AEFCA0-5CAC-4AD2-AB04-6A97A7903AA4/packaged/hls/playlist.m3u8",
+        "Episodio 11": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/8345CC4B-4C90-47DB-A2BF-7BB8C0AC1CB2/packaged/hls/playlist.m3u8",
+        "Episodio 12": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/58B88270-F984-4276-BDB5-DDF49CC81C17/packaged/hls/playlist.m3u8",
+        "Episodio 13": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/40B47BD3-6A5C-4248-A229-29D99A71F11E/packaged/hls/playlist.m3u8",
+        "Episodio 14": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/3746BDB5-FED6-4C3A-8549-03B9515402F0/packaged/hls/playlist.m3u8",
+        "Episodio 15": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/5E8673D4-2A62-4509-8B5C-40EC82F01B0C/packaged/hls/playlist.m3u8",
+        "Episodio 16": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/FB277662-8F3A-4951-9E1B-2BBD2D9D2DF6/packaged/hls/playlist.m3u8",
+        "Episodio 17": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/02/FAD26A2E-6C22-44B8-B274-5CB9086B45B8/packaged/hls/playlist.m3u8"
+      },
+      "Temporada 2": {
+        "Episodio 1": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/D1F97127-0D88-466C-8B1E-8CA74E80FA69/packaged/hls/playlist.m3u8",
+        "Episodio 2": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/FFACBD6B-74C0-4E62-AB4F-373C0EF92B67/packaged/hls/playlist.m3u8",
+        "Episodio 3": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/91CFAF46-C954-41F1-9E13-D649B0E35A85/packaged/hls/playlist.m3u8",
+        "Episodio 4": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/BAD718B6-A6EF-47E4-AF2B-8311C3E41927/packaged/hls/playlist.m3u8",
+        "Episodio 5": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/AE3D645D-EA4B-48F7-87B7-9A5DA3CDE9FB/packaged/hls/playlist.m3u8",
+        "Episodio 6": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/B7717083-325E-495B-91E6-67A5703884BD/packaged/hls/playlist.m3u8",
+        "Episodio 7": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/34C807CB-51C5-4646-A78D-C23FA3CDA843/packaged/hls/playlist.m3u8",
+        "Episodio 8": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/644406C7-C87B-4491-9E32-DD6877AB8075/packaged/hls/playlist.m3u8",
+        "Episodio 9": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/CCACF8DC-AC7E-46E8-9377-47CB72F4C108/packaged/hls/playlist.m3u8",
+        "Episodio 10": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/8BBA6043-31D2-4032-BC0F-FFE93EEE558E/packaged/hls/playlist.m3u8",
+        "Episodio 11": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/832A8283-58E0-4F19-AA0A-1456947BE6E9/packaged/hls/playlist.m3u8",
+        "Episodio 12": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/B2C38286-C395-49D2-9F98-D173B4D06B33/packaged/hls/playlist.m3u8",
+        "Episodio 13": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/F045B2D0-82E3-4017-B8D4-1F9AFDCF5125/packaged/hls/playlist.m3u8",
+        "Episodio 14": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets15/2021/01/12/C9DAD2D1-77C2-433D-B00D-2CCC5E634DB8/packaged/hls/playlist.m3u8"
+      },
+      "Temporada 3": {
+        "Episodio 1": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/5D1566C1-6F2E-41BE-B8C0-B94892D241F4/packaged/hls/playlist.m3u8",
+        "Episodio 2": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/08/FCBD579C-1966-424F-AE2E-A0F0AA247B8D/packaged/hls/playlist.m3u8",
+        "Episodio 3": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/C8F09435-855B-4A6E-B5DE-5F6775459C34/packaged/hls/playlist.m3u8",
+        "Episodio 4": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/08/8B1C0ACB-2E3A-4FF1-8AA0-2B7A525FF5D4/packaged/hls/playlist.m3u8",
+        "Episodio 5": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/A93E2850-990D-4049-844A-053D54A2BE8F/packaged/hls/playlist.m3u8",
+        "Episodio 6": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/43A2DFFD-337D-4941-8CB0-D1492812433D/packaged/hls/playlist.m3u8",
+        "Episodio 7": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/40B1BE07-21D8-4BD3-97DC-18BA97001CB6/packaged/hls/playlist.m3u8",
+        "Episodio 8": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/F2C9F6C1-33B2-4AD6-A0E9-72AFA445810C/packaged/hls/playlist.m3u8",
+        "Episodio 9": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/CC3E6CFB-09C7-44EC-B3D5-B3D9F0848D37/packaged/hls/playlist.m3u8",
+        "Episodio 10": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/1E9DB964-EE11-422E-8611-E0FB8704B983/packaged/hls/playlist.m3u8",
+        "Episodio 11": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/E67F16CD-467F-41E4-840B-A28DA03605E7/packaged/hls/playlist.m3u8",
+        "Episodio 12": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/46E106A5-69C7-4A0C-8184-452ACFDC6796/packaged/hls/playlist.m3u8",
+        "Episodio 13": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/121634D9-F98F-4C2E-8B4B-176A4F189CC8/packaged/hls/playlist.m3u8",
+        "Episodio 14": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/037866A4-F5A6-486E-9945-A431077FA1B1/packaged/hls/playlist.m3u8",
+        "Episodio 15": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/EBC1EA3E-5FE7-452C-8F00-6B12DD73E60F/packaged/hls/playlist.m3u8",
+        "Episodio 16": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/36FE01B2-2E25-4DF8-A4BD-4CEEABFA16DC/packaged/hls/playlist.m3u8",
+        "Episodio 17": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/3EC9B991-5276-4163-8E31-665B123E71A3/packaged/hls/playlist.m3u8",
+        "Episodio 18": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/25382A84-2AE8-4B55-B9C5-2533E1C964D2/packaged/hls/playlist.m3u8",
+        "Episodio 19": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/8D78B417-5A11-4F74-8BC8-9FCE52C31C14/packaged/hls/playlist.m3u8",
+        "Episodio 20": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/EF677F2E-69D1-436C-9209-66AE973D251F/packaged/hls/playlist.m3u8",
+        "Episodio 21": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/71A7A608-9B67-4021-AA0F-A266B488B877/packaged/hls/playlist.m3u8",
+        "Episodio 22": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/F6A47382-7367-4F61-85CC-12686DEB0B22/packaged/hls/playlist.m3u8",
+        "Episodio 23": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/777E9E82-811D-4514-9A1A-E75BE1DCD291/packaged/hls/playlist.m3u8",
+        "Episodio 24": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/126B3723-5F8C-434D-B6D8-59AEFBC991DC/packaged/hls/playlist.m3u8",
+        "Episodio 25": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/20DB0248-2A77-434A-BE30-39DBBAD490D4/packaged/hls/playlist.m3u8",
+        "Episodio 26": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/EB27F874-A39A-465F-9C18-9927E1E3DA7E/packaged/hls/playlist.m3u8",
+        "Episodio 27": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/7AA81672-33A9-4CA9-8D17-9C06C7A2A42D/packaged/hls/playlist.m3u8",
+        "Episodio 28": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/52637FA0-8073-4B9A-B0FF-95BC92535D50/packaged/hls/playlist.m3u8",
+        "Episodio 29": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/F2708602-E6F3-486F-925C-F0CFB2B948E9/packaged/hls/playlist.m3u8",
+        "Episodio 30": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/A9217E9D-F8AA-4BA0-BC59-F83C964FA522/packaged/hls/playlist.m3u8",
+        "Episodio 31": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/C1BFBBE3-A6FC-4B4C-BBA1-AF1C53DEE6CE/packaged/hls/playlist.m3u8",
+        "Episodio 32": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/568EA1BA-018B-45C5-A7B9-18018848DC22/packaged/hls/playlist.m3u8",
+        "Episodio 33": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/A4185602-3E29-45D8-B4EA-30A21A2D21F1/packaged/hls/playlist.m3u8"
+      },
+      "Temporada 4": {
+        "Episodio 1": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/7D0985A2-C16A-4E99-81E0-279C67DBD858/packaged/hls/playlist.m3u8",
+        "Episodio 2": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/9E111704-83CE-464B-9942-FB67B29EDF22/packaged/hls/playlist.m3u8",
+        "Episodio 3": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/21310200-8640-4A36-BBB5-536AA9AAC7D2/packaged/hls/playlist.m3u8",
+        "Episodio 4": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/A31AD9B1-1287-4F2F-9C4F-D9EB20B9DA1F/packaged/hls/playlist.m3u8",
+        "Episodio 5": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/09A8BBA5-5DF4-4FFF-BBA6-9CE14500810E/packaged/hls/playlist.m3u8",
+        "Episodio 6": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/E0E0FE76-D6B6-44F4-B243-FD243EB7A88E/packaged/hls/playlist.m3u8",
+        "Episodio 7": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/21B8EFE5-F515-4A68-8400-B7A34FB1C980/packaged/hls/playlist.m3u8",
+        "Episodio 8": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/7F7FFB06-F5D8-47D9-90F1-BF6C3593B179/packaged/hls/playlist.m3u8",
+        "Episodio 9": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/EC6A39D1-97B5-4559-89AE-240929AD0F0A/packaged/hls/playlist.m3u8",
+        "Episodio 10": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/7304F18D-FDD1-469B-A308-3DDE2CB461E2/packaged/hls/playlist.m3u8",
+        "Episodio 11": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/6D2A3696-7C8B-41E7-A39A-C1AD2D3E5501/packaged/hls/playlist.m3u8",
+        "Episodio 12": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/352D6939-93C5-4541-9F40-103D3B8DA50A/packaged/hls/playlist.m3u8",
+        "Episodio 13": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/D6B66B4A-F7BE-418D-A899-4756C7518008/packaged/hls/playlist.m3u8",
+        "Episodio 14": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/176C046A-31DF-473D-B2FF-929CDAF89D62/packaged/hls/playlist.m3u8"
+      },
+      "Temporada 5": {
+        "Episodio 1": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/B1A40FFE-53FE-4B23-97C3-935A9F7268BB/packaged/hls/playlist.m3u8",
+        "Episodio 2": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/7D677C12-DC51-48BE-B2F2-0E25ECDDE4EA/packaged/hls/playlist.m3u8",
+        "Episodio 3": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/44AAE282-08BE-4D09-8AA9-2E842BBC3E2D/packaged/hls/playlist.m3u8",
+        "Episodio 4": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/BB565024-EA51-465E-B896-EC9210B7EDB5/packaged/hls/playlist.m3u8",
+        "Episodio 5": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/09/DA0119DD-D615-483A-92DE-25ED057FA294/packaged/hls/playlist.m3u8",
+        "Episodio 6": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/351ED3F7-49C6-4653-91AC-F87F268F1799/packaged/hls/playlist.m3u8",
+        "Episodio 7": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/A994868D-4119-4436-87C5-BF4973F6F8F6/packaged/hls/playlist.m3u8",
+        "Episodio 8": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/09/D608DC2A-C79E-4D27-9B0B-7C889C1562CC/packaged/hls/playlist.m3u8",
+        "Episodio 9": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/15/7117DB1D-3C62-4521-B01E-30BEA000DDBB/packaged/hls/playlist.m3u8",
+        "Episodio 10": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/15/4FFEE020-608E-4699-B4C1-004950EB3A13/packaged/hls/playlist.m3u8",
+        "Episodio 11": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets13/2016/10/15/3C482D05-10B8-45A8-AE16-2BACD6EFA5D2/packaged/hls/playlist.m3u8",
+        "Episodio 13": "https://cloud3-atres-st-ams.atresmedia.com/nogeo/assets14/2016/10/15/B0904468-94E2-44E8-A9F1-DA5D28701E18/packaged/hls/playlist.m3u8"
+      }
+    };
+
+    let hls;
+    let checkTimeInterval;
+
+    function cargarTemporadas() {
+      for (const temporada in episodios) {
+        const option = document.createElement('option');
+        option.value = temporada;
+        option.textContent = temporada;
+        temporadaSelect.appendChild(option);
+      }
+    }
+
+    function cargarEpisodios(temporada) {
+      episodioSelect.innerHTML = '<option value="">Selecciona un episodio</option>';
+      if (temporada) {
+        const episodiosTemporada = episodios[temporada];
+        for (const episodio in episodiosTemporada) {
+          const option = document.createElement('option');
+          option.value = episodio;
+          option.textContent = episodio;
+          episodioSelect.appendChild(option);
+        }
+        episodioSelect.disabled = false;
+      } else {
+        episodioSelect.disabled = true;
+      }
+    }
+
+    function cargarVideo(url) {
+      if (hls) {
+        hls.destroy();
+      }
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+        video.addEventListener('loadedmetadata', function() {
+          video.play();
+        });
+      } else {
+        alert('Tu navegador no soporta HLS');
+      }
+    }
+
+    function getNextEpisode(currentSeason, currentEpisode) {
+      const temporadas = Object.keys(episodios);
+      const episodiosTemporada = Object.keys(episodios[currentSeason]);
+      const episodioIndex = episodiosTemporada.indexOf(currentEpisode);
+
+      if (episodioIndex < episodiosTemporada.length - 1) {
+        return {
+          temporada: currentSeason,
+          episodio: episodiosTemporada[episodioIndex + 1]
+        };
+      } else {
+        const temporadaIndex = temporadas.indexOf(currentSeason);
+        if (temporadaIndex < temporadas.length - 1) {
+          const siguienteTemporada = temporadas[temporadaIndex + 1];
+          const primerEpisodio = Object.keys(episodios[siguienteTemporada])[0];
+          return {
+            temporada: siguienteTemporada,
+            episodio: primerEpisodio
+          };
+        }
+      }
+      return null;
+    }
+
+    function controlarProgreso() {
+      clearInterval(checkTimeInterval);
+
+      checkTimeInterval = setInterval(() => {
+        if (video.duration > 0 && video.currentTime > video.duration * 0.9) {
+          const next = getNextEpisode(temporadaSelect.value, episodioSelect.value);
+          if (next) {
+            nextButton.style.display = 'block';
+          } else {
+            nextButton.style.display = 'none';
+          }
+        } else {
+          nextButton.style.display = 'none';
+        }
+      }, 1000);
+    }
+
+    temporadaSelect.addEventListener('change', function() {
+      cargarEpisodios(this.value);
+      video.pause();
+      nextButton.style.display = 'none';
+      clearInterval(checkTimeInterval);
+    });
+
+    episodioSelect.addEventListener('change', function() {
+      const temporada = temporadaSelect.value;
+      const episodio = episodioSelect.value;
+
+      if (temporada && episodio) {
+        const url = episodios[temporada][episodio];
+        cargarVideo(url);
+        controlarProgreso();
+      }
+    });
+
+    nextButton.addEventListener('click', function() {
+      const next = getNextEpisode(temporadaSelect.value, episodioSelect.value);
+      if (next) {
+        temporadaSelect.value = next.temporada;
+        cargarEpisodios(next.temporada);
+        episodioSelect.value = next.episodio;
+        const url = episodios[next.temporada][next.episodio];
+        cargarVideo(url);
+        controlarProgreso();
+      }
+      this.style.display = 'none';
+    });
+
+    // Doble clic para fullscreen
+    video.addEventListener('dblclick', () => {
+      if (!document.fullscreenElement) {
+        videoContainer.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    cargarTemporadas();
+
+  </script>
+
+</body>
+</html>
